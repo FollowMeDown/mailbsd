@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+# Warning: Please source 'conf/postfix' first.
+
+export AMAVISD_QUARANTINE_PORT='9998'
+export AMAVISD_LOGFILE='/var/log/amavisd.log'
+export AMAVISD_LOGROTATE_FILE="${LOGROTATE_DIR}/amavisd"
+export AMAVISD_DKIM_SELECTOR='dkim'
+export AMAVISD_RC_SCRIPT_NAME='amavisd'
+
+export AMAVISD_DKIM_DIR="${AMAVISD_DKIM_DIR:=/var/lib/dkim}"
+
+# Network ports
+export AMAVISD_SMTP_PORT='10024'
+export AMAVISD_ORIGINATING_PORT='10026'
+export AMAVISD_MLMMJ_PORT='10027'
+export AMAVISD_QUARANTINE_PORT='9998'
+
+# Database used to store incoming & outgoing email related information.
+export AMAVISD_DB_NAME='amavisd'
+export AMAVISD_DB_USER='amavisd'
+
+# Altermime.
+export DISCLAIMER_DIR="${POSTFIX_ROOTDIR}/disclaimer"
+
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export SYS_USER_AMAVISD='_vscan'
+    export SYS_GROUP_AMAVISD='_vscan'
+
+    export AMAVISD_BIN='/usr/local/sbin/amavisd'
+    export AMAVISD_CONF='/etc/amavisd.conf'
+    export AMAVISD_LDAP_SCHEMA_NAME='amavisd.schema'
+
+    export AMAVISD_SPOOL_DIR='/var/amavisd'
+    export AMAVISD_VAR_RUN_DIR="${AMAVISD_SPOOL_DIR}"
+
+    # Override location of command 'altermime'
+    export CMD_ALTERMIME='/usr/local/bin/altermime'
+
+fi
+
+export CRON_FILE_AMAVISD="${CRON_SPOOL_DIR}/${SYS_USER_AMAVISD}"
+
+export AMAVISD_DB_DIR="${AMAVISD_SPOOL_DIR}/db"
+export AMAVISD_QUARANTINE_DIR="${AMAVISD_SPOOL_DIR}/quarantine"
+export AMAVISD_TEMP_DIR="${AMAVISD_SPOOL_DIR}/tmp"
+
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export AMAVISD_VIRUSMAILS_DIR='/var/virusmails'
+fi
+
+export AMAVISD_LOCK_FILE="${AMAVISD_VAR_RUN_DIR}/amavisd.lock"
+export AMAVISD_PID_FILE="${AMAVISD_VAR_RUN_DIR}/amavisd.pid"
+export AMAVISD_SOCKET_FILE="${AMAVISD_VAR_RUN_DIR}/amavisd.socket"
+
+export AMAVISD_DB_MYSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.mysql"
+export AMAVISD_DB_PGSQL_TMPL="${SAMPLE_DIR}/amavisd/amavisd.pgsql"
+
+# mynetworks, inet_acl
+export AMAVISD_MYNETWORKS='127.0.0.0/8'
+export AMAVISD_INET_ACL='127.0.0.1 [::1]'
+if [ X"${LOCAL_ADDRESS}" != X'127.0.0.1' ]; then
+    export AMAVISD_MYNETWORKS="${AMAVISD_MYNETWORKS},${LOCAL_ADDRESS}"
+    export AMAVISD_INET_ACL="${AMAVISD_INET_ACL} ${LOCAL_ADDRESS}"
+fi
+
+# Num of pre-forked children.
+# Try to set it to memory size (in GB)
+if [ X"${KERNEL_NAME}" == X'OPENBSD' ]; then
+    _mem_size="$(sysctl hw.physmem | awk -F'=' '{print $2}')"
+    export AMAVISD_MAX_SERVERS="$((${_mem_size} / 1024 / 1024 / 1024 + 1))"
+fi

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+# Variables for PostgreSQL database server and related.
+# PGSQL_SERVER_ADDRESS and PGSQL_SERVER_PORT are defined in conf/global.
+# SQL_SERVER_ADDRESS and SQL_SERVER_PORT are defined in dialog/config_via_dialog.sh.
+
+export PGSQL_RC_SCRIPT_NAME='postgresql'
+
+export PGSQL_INIT_SQL_SAMPLE="${RUNTIME_DIR}/pgsql_init.pgsql"
+
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export SYS_USER_PGSQL='_postgresql'
+    export SYS_GROUP_PGSQL='_postgresql'
+    export PGSQL_USER_HOMEDIR='/var/postgresql'
+
+    export PGSQL_DATA_DIR="${PGSQL_USER_HOMEDIR}/data"
+    export PGSQL_CONF_POSTGRESQL="${PGSQL_DATA_DIR}/postgresql.conf"
+    export PGSQL_CONF_PG_HBA="${PGSQL_DATA_DIR}/pg_hba.conf"
+fi
+
+export PGSQL_ROOT_USER="${SYS_USER_PGSQL}"
+export PGSQL_RC_SCRIPT="${DIR_RC_SCRIPTS}/${PGSQL_RC_SCRIPT_NAME}"
+
+# ~/.pgpass
+export PGSQL_DOT_PGPASS="${PGSQL_USER_HOMEDIR}/.pgpass"
+
+# SSL cert/key
+export PGSQL_SSL_CERT="${SSL_CERT_DIR}/MailBSD_CA_PostgreSQL.pem"
+export PGSQL_SSL_KEY="${SSL_KEY_DIR}/MailBSD_PostgreSQL.key"
+
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export PGSQL_BIN_PG_DUMP='/usr/local/bin/pg_dump'
+    export PGSQL_BIN_PG_DUMPALL='/usr/local/bin/pg_dumpall'
+fi

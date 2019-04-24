@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# RC scripts
+export NGINX_RC_SCRIPT_NAME='nginx'
+
+# Configuration files
+export HTTPD_CONF_ROOT='/etc/nginx'
+
+# Log files
+export HTTPD_LOG_ACCESSLOG='/var/log/nginx/access.log'
+export HTTPD_LOG_ERRORLOG='/var/log/nginx/error.log'
+
+# PID file
+export NGINX_PID='/var/run/nginx.pid'
+
+# Directory for storing temporary files holding client request bodies.
+export NGINX_CLIENT_BODY_TEMP_PATH='/var/lib/nginx_tmp_client_body'
+
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export HTTPD_LOG_ACCESSLOG='logs/access.log'
+    export HTTPD_LOG_ERRORLOG='logs/error.log'
+
+fi
+
+export HTTPD_CONF_DIR_AVAILABLE_CONF="${HTTPD_CONF_ROOT}/conf-available"
+export HTTPD_CONF_DIR_ENABLED_CONF="${HTTPD_CONF_ROOT}/conf-enabled"
+
+# Directory used to store all sites. Note: not loaded by default.
+export HTTPD_CONF_DIR_AVAILABLE_SITES="${HTTPD_CONF_ROOT}/sites-available"
+
+# Directory used to store site config files which will be loaded by default.
+# Usually we just create a symbol link to file under ${HTTPD_CONF_DIR_AVAILABLE_SITES}
+export HTTPD_CONF_DIR_ENABLED_SITES="${HTTPD_CONF_ROOT}/sites-enabled"
+
+export NGINX_CONF="${HTTPD_CONF_ROOT}/nginx.conf"
+export NGINX_CONF_SITE_DEFAULT="${HTTPD_CONF_DIR_AVAILABLE_SITES}/00-default.conf"
+export NGINX_CONF_SITE_DEFAULT_SSL="${HTTPD_CONF_DIR_AVAILABLE_SITES}/00-default-ssl.conf"
+export NGINX_CONF_TMPL_DIR="${HTTPD_CONF_ROOT}/templates"
+
+export NGINX_MIME_TYPES="${HTTPD_CONF_ROOT}/mime.types"

@@ -1,0 +1,13 @@
+This folder contains all translations for the latest iRedAdmin-Pro.
+You can simply copy them to iRedAdmin-Pro folder 'i18n/', then restart Apache to use them.
+
+Latest update:
+
+    + Russian (ru_RU). Thanks Андрей Бережков <kidhtc _at_ gmail>. 2013-07-24
+
+New and updated translations (April 22, 2013):
+
+    + Russian (ru_RU). Thanks Taylor D <hoper.me _at_ gmail.com>.
+    + German (de_DE). Thanks Ivo Schindler <ivo.schindler _at_ i-web.ch>,
+      and Martin <info _at_ netzwerk-design.net>.
+    + Chinese (zh_CN). Zhang Huangbin <zhb _at_ iredmail.org>.

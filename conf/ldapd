@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Variables for OpenBSD ldapd(8).
+
+# RC script
+export LDAPD_RC_SCRIPT_NAME='ldapd'
+
+# Config file
+export LDAPD_CONF='/etc/ldapd.conf'
+
+# Schema directory
+export LDAPD_SCHEMA_DIR='/etc/ldap'
+
+# Data directory.
+export LDAPD_DATA_DIR='/var/db/ldap'

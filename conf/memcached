@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Memcached is an easy-to-use, high-performance, in-memory data store.
+
+export MEMCACHED_BIND_ADDRESS="${MEMCACHED_BIND_ADDRESS:=${LOCAL_ADDRESS}}"
+
+export MEMCACHED_RC_SCRIPT_NAME='memcached'
+
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export MEMCACHED_DAEMIN_USER='_memcached'
+fi

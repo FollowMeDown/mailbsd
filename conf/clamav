@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# https://www.clamav.net/
+
+export CLAMAV_CLAMD_SERVICE_NAME='clamd'
+
+export CLAMD_CONF='/etc/clamd.conf'
+export CLAMD_LOG_DIR='/var/log/clamav'
+export CLAMD_LOGFILE="${CLAMD_LOG_DIR}/clamd.log"
+# CLAMD_BIND_HOST is configured in conf/global
+export CLAMD_LOCAL_SOCKET='/tmp/clamd.socket'
+
+export FRESHCLAM_CONF='/etc/freshclam.conf'
+export FRESHCLAM_LOGFILE="${CLAMD_LOG_DIR}/freshclam.log"
+
+# Update database immediately
+export FRESHCLAM_UPDATE_IMMEDIATELY="${FRESHCLAM_UPDATE_IMMEDIATELY:=YES}"
+
+# Clamav.
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export SYS_USER_CLAMAV='_clamav'
+    export SYS_GROUP_CLAMAV='_clamav'
+    export CLAMAV_FRESHCLAMD_RC_SCRIPT_NAME='freshclam'
+    export FRESHCLAM_PID_FILE='/var/run/freshclam.pid'
+fi

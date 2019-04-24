@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# mlmmj user/group name
+export SYS_USER_MLMMJ='mlmmj'
+export SYS_GROUP_MLMMJ='mlmmj'
+
+# Directory used to store mailing list accounts and archive of in/out mails
+export MLMMJ_SPOOL_DIR="${STORAGE_BASE_DIR}/mlmmj"
+export MLMMJ_HOME_DIR="${MLMMJ_SPOOL_DIR}"
+
+# Directory used to store archived mailing list accounts and data.
+export MLMMJ_ARCHIVE_DIR="${STORAGE_BASE_DIR}/mlmmj-archive"
+
+export CRON_FILE_MLMMJ="${CRON_SPOOL_DIR}/${SYS_USER_MLMMJ}"
+
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export CMD_MLMMJ_RECEIVE='/usr/local/bin/mlmmj-receive'
+    export CMD_MLMMJ_MAINTD='/usr/local/bin/mlmmj-maintd'
+    export CMD_MLMMJ_AMIME_RECEIVE='/usr/local/bin/mlmmj-amime-receive'
+    # Directory which stores skel files (templates in different languages)
+    export MLMMJ_SKEL_DIR='/usr/local/share/mlmmj/text.skel'
+fi
+
+#
+# mlmmjadmin: RESTful API server used to manage mlmmj mailing lists
+#
+export MLMMJADMIN_RC_SCRIPT_NAME='mlmmjadmin'
+export MLMMJADMIN_RC_SCRIPT_PATH="${DIR_RC_SCRIPTS}/${MLMMJADMIN_RC_SCRIPT_NAME}"
+
+export MLMMJADMIN_LISTEN_PORT='7790'
+export MLMMJADMIN_PID_FILE='/var/run/mlmmjadmin/mlmmjadmin.pid'
+
+export MLMMJADMIN_VERSION='2.1'
+export MLMMJADMIN_TARBALL="mlmmjadmin-${MLMMJADMIN_VERSION}.tar.gz"
+
+export MLMMJADMIN_PARENT_DIR='/opt'
+export MLMMJADMIN_ROOT_DIR="${MLMMJADMIN_PARENT_DIR}/mlmmjadmin-${MLMMJADMIN_VERSION}"
+export MLMMJADMIN_ROOT_DIR_SYMBOL_LINK="${MLMMJADMIN_PARENT_DIR}/mlmmjadmin"
+export MLMMJADMIN_CONF="${MLMMJADMIN_ROOT_DIR_SYMBOL_LINK}/settings.py"
+
+export MLMMJADMIN_LOG_DIR='/var/log/mlmmjadmin'
+export MLMMJADMIN_LOG_FILE="${MLMMJADMIN_LOG_DIR}/mlmmjadmin.log"
+export MLMMJADMIN_LOGROTATE_FILE="${LOGROTATE_DIR}/mlmmjadmin"

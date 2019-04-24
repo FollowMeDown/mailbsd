@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# path to php program
+export PHP_BIN='/usr/bin/php'
+
+# Path used to store php sessions (session.save_path)
+export PHP_SESSION_SAVE_PATH='/var/lib/php/sessions'
+
+# php-fpm
+export PHP_FPM_RC_SCRIPT_NAME='php-fpm'
+export PHP_FPM_CONF='/etc/php-fpm.conf'
+export PHP_FPM_POOL_DIR='/etc/php-fpm.d'
+export PHP_FPM_LOGROTATE_CONF='/etc/logrotate.d/php-fpm'
+
+# Disabled PHP functions.
+export PHP_DISABLE_FUNCTIONS='posix_uname,eval,pcntl_wexitstatus,posix_getpwuid,xmlrpc_entity_decode,pcntl_wifstopped,pcntl_wifexited,pcntl_wifsignaled,phpAds_XmlRpc,pcntl_strerror,ftp_exec,pcntl_wtermsig,mysql_pconnect,proc_nice,pcntl_sigtimedwait,posix_kill,pcntl_sigprocmask,fput,phpinfo,system,phpAds_remoteInfo,ftp_login,inject_code,posix_mkfifo,highlight_file,escapeshellcmd,show_source,pcntl_wifcontinued,fp,pcntl_alarm,pcntl_wait,ini_alter,posix_setpgid,parse_ini_file,ftp_raw,pcntl_waitpid,pcntl_getpriority,ftp_connect,pcntl_signal_dispatch,pcntl_wstopsig,ini_restore,ftp_put,passthru,proc_terminate,posix_setsid,pcntl_signal,pcntl_setpriority,phpAds_xmlrpcEncode,pcntl_exec,ftp_nb_fput,ftp_get,phpAds_xmlrpcDecode,pcntl_sigwaitinfo,shell_exec,pcntl_get_last_error,ftp_rawlist,pcntl_fork,posix_setuid'
+
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    export OB_PHP_VERSION='7.2'
+
+    export PHP_BIN="/usr/local/bin/php-${OB_PHP_VERSION}"
+    export PHP_INI="/etc/php-${OB_PHP_VERSION}.ini"
+    export PHP_FPM_RC_SCRIPT_NAME='php72_fpm'
+    export PHP_FPM_PID_FILE='/var/run/php-fpm.pid'
+fi
+
+# PHP-FPM
+export PHP_FPM_POOL_WWW_CONF="${PHP_FPM_POOL_DIR}/www.conf"
+# log
+export PHP_FPM_LOG_DIR='/var/log/php-fpm'
+export PHP_FPM_LOG_MAIN="${PHP_FPM_LOG_DIR}/php-fpm.log"
+export PHP_FPM_LOG_SLOW="${PHP_FPM_LOG_DIR}/slow.log"
+# parameters
+export PHP_FPM_REQUEST_SLOWLOG_TIMEOUT='10s'
+export PHP_FPM_URI_STATUS='status'
+export PHP_FPM_URI_PING='ping'
+export PHP_FPM_POOL_MAX_CHILDREN=100
+export PHP_FPM_POOL_START_SERVERS=5
+export PHP_FPM_POOL_MIN_SPARE_SERVERS=5
+export PHP_FPM_POOL_MAX_SPARE_SERVERS=10
+export PHP_FPM_POOL_MAX_REQUESTS=100
+export PHP_FPM_POOL_REQUEST_TERMINATE_TIMEOUT='10s'
+
+# connection type: mysql, mysqli (recommended for MySQL/MariaDB), pgsql.
+export PHP_CONN_TYPE='mysqli'
+[ X"${BACKEND}" == X'PGSQL' ] && export PHP_CONN_TYPE='pgsql'

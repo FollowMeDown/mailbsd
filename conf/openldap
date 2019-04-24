@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+# Variables for OpenLDAP and related. Refer to 'dialog/ldap_config.sh'.
+
+# OpenLDAP version number.
+export OPENLDAP_VERSION='2.4'
+
+# Module name.
+export OPENLDAP_MOD_PW_SHA2='pw-sha2'
+
+# LDAP service info.
+
+# LDAP_SERVER_HOST, LDAP_SERVER_PORT are defined in conf/global.
+export LDAP_USE_TLS='NO'
+export LDAP_BIND='yes'
+export LDAP_BIND_VERSION='3'
+
+export OPENLDAP_RC_SCRIPT_NAME='slapd'
+
+# Configuration files.
+export OPENLDAP_CONF_ROOT='/etc/openldap'
+
+# Default LDAP data directory.
+export OPENLDAP_DATA_DIR='/var/lib/ldap'    # Do *NOT* end with '/'.
+
+export OPENLDAP_PID_FILE='/var/run/openldap/slapd.pid'
+export OPENLDAP_ARGS_FILE='/var/run/openldap/slapd.args'
+
+# Configure.
+
+if [ X"${DISTRO}" == X'OPENBSD' ]; then
+    # LDAP daemon user & group.
+    export SYS_USER_LDAP='_openldap'
+    export SYS_GROUP_LDAP='_openldap'
+
+    # mdb is not available on OpenBSD.
+    export OPENLDAP_DEFAULT_DBTYPE='hdb'
+
+    export OPENLDAP_DB_CONFIG_SAMPLE='/usr/local/share/examples/openldap/DB_CONFIG'
+
+    # Module related.
+    export OPENLDAP_HAS_SHA2='NO'
+    export OPENLDAP_MODULE_PATH='/usr/local/libexec/openldap'
+fi
+
+# RC script.
+export OPENLDAP_RC_SCRIPT="${DIR_RC_SCRIPTS}/${OPENLDAP_RC_SCRIPT_NAME}"
+
+export OPENLDAP_SCHEMA_DIR="${OPENLDAP_CONF_ROOT}/schema"
+export OPENLDAP_SLAPD_CONF="${OPENLDAP_CONF_ROOT}/slapd.conf"
+export OPENLDAP_LDAP_CONF="${OPENLDAP_CONF_ROOT}/ldap.conf"
+
+# Log
+# OpenLDAP logs to local4 by default.
+export OPENLDAP_SYSLOG_FACILITY='local4'
+export OPENLDAP_LOG_DIR='/var/log/openldap'
+export OPENLDAP_LOG_FILE="${OPENLDAP_LOG_DIR}/openldap.log"
+export OPENLDAP_LOGROTATE_FILE="${LOGROTATE_DIR}/openldap"
+
+# LDAP data directory.
+export ldap_suffix_to_domain_name="$(echo ${LDAP_SUFFIX} | sed -e 's/dc=//g' -e 's/,/./g')"
+export LDAP_DATA_DIR="${OPENLDAP_DATA_DIR}/${ldap_suffix_to_domain_name}"
+
+# Setting for one instance. You can edit ${OPENLDAP_SLAPD_CONF} manually to hold
+# multi instances.
+export LDAP_INIT_LDIF="${RUNTIME_DIR}/ldap_init.ldif"
+
+##################################################
+# MailBSD LDAP schema related
+#
+export LDAP_MAILBSD_SCHEMA="${SAMPLE_DIR}/mailbsd/mailbsd.schema"
+
+# Domain admin related.
+export LDAP_ATTR_DOMAINADMIN_DN_NAME='domainAdmins'
+
+# Container which includes all mail accounts: o=domains,dc=xx,dc=xx
+export LDAP_BASEDN_NAME='domains'
+
+# Domain related attributes.
+export LDAP_ATTR_DOMAIN_RDN='domainName'
+
+# Group related.
+export LDAP_ATTR_GROUP_RDN='ou'
+export LDAP_ATTR_GROUP_USERS='Users'
+export LDAP_ATTR_GROUP_GROUPS='Groups'
+export LDAP_ATTR_GROUP_ALIASES='Aliases'
+export LDAP_ATTR_GROUP_EXTERNALS='Externals'
+
+# Attributes of user object.
+export LDAP_ATTR_USER_RDN='mail'
+
+##################################################
+# Password scheme
+#
+# If no pw-sha2 support, use SSHA instead.
+if [ X"${BACKEND}" == X'OPENLDAP' -a X"${OPENLDAP_HAS_SHA2}" != X'YES' ]; then
+    export DEFAULT_PASSWORD_SCHEME='SSHA'
+fi
+
+export LDAP_BINDDN="cn=${SYS_USER_VMAIL},${LDAP_SUFFIX}"
+export LDAP_ADMIN_DN="cn=${VMAIL_DB_ADMIN_USER},${LDAP_SUFFIX}"
+export LDAP_ROOTDN="cn=Manager,${LDAP_SUFFIX}"
+export LDAP_BASEDN="o=${LDAP_BASEDN_NAME},${LDAP_SUFFIX}"
+export LDAP_ADMIN_BASEDN="o=${LDAP_ATTR_DOMAINADMIN_DN_NAME},${LDAP_SUFFIX}"

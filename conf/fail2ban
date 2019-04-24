@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Variables for Fail2ban and related.
+
+export FAIL2BAN_CONF_ROOT='/etc/fail2ban'
+export FAIL2BAN_RC_SCRIPT_NAME='fail2ban'
+
+export FAIL2BAN_MAIN_CONF="${FAIL2BAN_CONF_ROOT}/fail2ban.conf"
+export FAIL2BAN_JAIL_CONF="${FAIL2BAN_CONF_ROOT}/jail.conf"
+export FAIL2BAN_JAIL_LOCAL_CONF="${FAIL2BAN_CONF_ROOT}/jail.local"
+export FAIL2BAN_JAIL_CONF_DIR="${FAIL2BAN_CONF_ROOT}/jail.d"
+export FAIL2BAN_FILTER_DIR="${FAIL2BAN_CONF_ROOT}/filter.d"
+export FAIL2BAN_ACTION_DIR="${FAIL2BAN_CONF_ROOT}/action.d"
+
+export FAIL2BAN_FILTER_POSTFIX="postfix.mailbsd"
+export FAIL2BAN_FILTER_ROUNDCUBE="roundcube.mailbsd"
+export FAIL2BAN_FILTER_DOVECOT="dovecot.mailbsd"
+
+# Fail2ban logtarget: STDOUT STDERR SYSLOG file.
+# Default log file is /var/log/fail2ban.log.
+export FAIL2BAN_LOGTARGET='SYSLOG'
+export FAIL2BAN_DISABLED_SERVICES="http,https,smtp,submission,465,pop3,pop3s,imap,imaps,sieve"
+
+# Firewall command (fail2ban/action.d/[NAME].conf)
+
+export FAIL2BAN_ACTION='pf'

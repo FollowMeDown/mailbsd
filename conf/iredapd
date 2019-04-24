@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+export IREDAPD_VERSION='2.7'
+export SYS_USER_IREDAPD='iredapd'
+export SYS_GROUP_IREDAPD='iredapd'
+
+export IREDAPD_TARBALL="iRedAPD-${IREDAPD_VERSION}.tar.bz2"
+export IREDAPD_PARENT_DIR='/opt'
+export IREDAPD_ROOT_DIR="${IREDAPD_PARENT_DIR}/iRedAPD-${IREDAPD_VERSION}"
+export IREDAPD_ROOT_DIR_SYMBOL_LINK="${IREDAPD_PARENT_DIR}/iredapd"
+export IREDAPD_CONF="${IREDAPD_ROOT_DIR_SYMBOL_LINK}/settings.py"
+
+# IREDAPD_BIND_HOST is configured in conf/global
+export IREDAPD_LISTEN_PORT='7777'
+export IREDAPD_SRS_FORWARD_PORT='7778'
+export IREDAPD_SRS_REVERSE_PORT='7779'
+
+export IREDAPD_PID_FILE='/var/run/iredapd.pid'
+export IREDAPD_LOG_DIR='/var/log/iredapd'
+export IREDAPD_LOG_FILE="${IREDAPD_LOG_DIR}/iredapd.log"
+export IREDAPD_LOGROTATE_FILE="${LOGROTATE_DIR}/iredapd"
+
+# Database
+# IREDAPD_DB_PASSWD is generated in dialog/optional_components.sh.
+export IREDAPD_DB_NAME='iredapd'
+export IREDAPD_DB_USER='iredapd'
